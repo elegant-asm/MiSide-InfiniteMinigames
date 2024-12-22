@@ -43,15 +43,6 @@ public class Plugin : BasePlugin
         IL2CPPChainloader.AddUnityComponent(typeof(InfiniteMinigames));
     }
 
-    //internal static string GetGameObjectPath(GameObject obj) {
-    //    string path = "/" + obj.name;
-    //    while (obj.transform.parent != null) {
-    //        obj = obj.transform.parent.gameObject;
-    //        path = "/" + obj.name + path;
-    //    }
-    //    return path;
-    //}
-
     internal class TemporaryQuadLinerSettingz : MonoBehaviour {
         public int realWave = 0;
     }
@@ -184,7 +175,6 @@ public class Plugin : BasePlugin
                     __instance.componentMain.waves[2] = ShooterFunctions.CreateWave(settings, lastWave);
                     __instance.componentMain.indexWave = 1;
                     __instance.componentMain.NextWave();
-                    //return false;
                 }
             }
             return true;
@@ -350,24 +340,12 @@ public class Plugin : BasePlugin
     //}
 
     internal static class Patch_Location4TableCardGame {
-        //[HarmonyPatch(typeof(Location4TableCardGame), "Update")]
-        //[HarmonyPrefix]
-        //private static bool Update(Location4TableCardGame __instance) {
-        //    if (Plugin.allowInfiniteMinigames)
-        //        if (__instance.countSteps > 3)
-        //            __instance.countSteps--;
-
-        //    return true;
-        //}
-
         [HarmonyPatch(typeof(Location4TableCardGame), "LookResult")]
         [HarmonyPrefix]
         private static bool LookResult(Location4TableCardGame __instance) {
-            //Console.WriteLine("Checking results");
             if (Plugin.allowInfiniteMinigames) {
                 if (__instance.countSteps > 3)
                     __instance.countSteps--;
-                //Console.WriteLine("IsPlayerHoldingCards: {0}", __instance.playerHoldCards);
                 if (__instance.playerHoldCards) {
                     int playerCardsCount = -1;
                     foreach (Location4TableCardGame_CardHold cardHold in __instance.cardsPlayer) {
@@ -376,7 +354,6 @@ public class Plugin : BasePlugin
                             playerCardsCount++;
                         else continue;
                     }
-                    //Console.WriteLine("Player's cards count: {0}", playerCardsCount);
                     if (playerCardsCount == 0) {
                         __instance.playerHoldCards = false;
                         __instance.mitaHoldCards = false;
