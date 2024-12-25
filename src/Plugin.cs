@@ -4,6 +4,7 @@ using BepInEx.Unity.IL2CPP;
 using HarmonyLib;
 using Il2CppInterop.Runtime.Injection;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using UnityEngine;
 
@@ -28,6 +29,8 @@ public class Plugin : BasePlugin
         harmony.PatchAll(typeof(Patch_QuadLinerMain));
 
         harmony.PatchAll(typeof(Patch_MinigamesAutomate));
+
+        //harmony.PatchAll(typeof(Patch_ObjectInteractive));
 
         harmony.PatchAll(typeof(Patch_Shooter_Main));
         harmony.PatchAll(typeof(Patch_Shooter_Enemy));
@@ -118,6 +121,42 @@ public class Plugin : BasePlugin
                 __instance.textNumberLevel.text = settings.realWave.ToString();
         }
     }
+
+    //internal static class Patch_ObjectInteractive {
+    //    [HarmonyPatch(typeof(Location7_GameDance), "")]
+
+        //internal class TemporaryObjectInteractiveSave : MonoBehaviour {
+        //    public GameObject instantiated = null;
+        //    //public GameObject instParent = null;
+        //}
+
+        //[HarmonyPatch(typeof(ObjectInteractive), "Start")]
+        //[HarmonyPostfix]
+        //private static void Start(ObjectInteractive __instance) {
+        //    if (!ClassInjector.IsTypeRegisteredInIl2Cpp<TemporaryObjectInteractiveSave>())
+        //        ClassInjector.RegisterTypeInIl2Cpp<TemporaryObjectInteractiveSave>();
+
+        //    if (__instance.gameObject.GetComponent<TemporaryObjectInteractiveSave>())
+        //        return;
+
+        //    TemporaryObjectInteractiveSave save = __instance.gameObject.AddComponent<TemporaryObjectInteractiveSave>();
+        //    save.instantiated = Object.Instantiate(__instance.transform.gameObject);
+        //    save.instantiated.gameObject.active = false;
+        //}
+
+        //[HarmonyPatch(typeof(ObjectInteractive), "OnDisable")]
+        //[HarmonyPrefix]
+        //private static void OnDisable(ObjectInteractive __instance) {
+        //    if (__instance && __instance.destroyComponent) {
+        //        Plugin.Log.LogWarning("ObjectInteractive destruction");
+        //        TemporaryObjectInteractiveSave save = __instance.gameObject.GetComponent<TemporaryObjectInteractiveSave>();
+        //        save.instantiated.transform.parent = __instance.transform.parent;
+        //        save.instantiated.gameObject.active = true;
+        //        save.instantiated.GetComponent<ObjectInteractive>().Activation(true);
+        //        Object.Destroy(save);
+        //    }
+        //}
+    //}
 
     internal static class Patch_MinigamesAutomate {
         [HarmonyPatch(typeof(MinigamesAutomate), "Start")]
